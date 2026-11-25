@@ -1,0 +1,398 @@
+[
+  {
+    "id": "Gen",
+    "abbr": "Rdz",
+    "name_en": "Genesis",
+    "name_pl": "Księga Rodzaju"
+  },
+  {
+    "id": "Exod",
+    "abbr": "Wj",
+    "name_en": "Exodus",
+    "name_pl": "Księga Wyjścia"
+  },
+  {
+    "id": "Lev",
+    "abbr": "Kpł",
+    "name_en": "Leviticus",
+    "name_pl": "Księga Kapłańska"
+  },
+  {
+    "id": "Num",
+    "abbr": "Lb",
+    "name_en": "Numbers",
+    "name_pl": "Księga Liczb"
+  },
+  {
+    "id": "Deut",
+    "abbr": "Pwt",
+    "name_en": "Deuteronomy",
+    "name_pl": "Księga Powtórzonego Prawa"
+  },
+  {
+    "id": "Josh",
+    "abbr": "Joz",
+    "name_en": "Joshua",
+    "name_pl": "Księga Jozuego"
+  },
+  {
+    "id": "Judg",
+    "abbr": "Sdz",
+    "name_en": "Judges",
+    "name_pl": "Księga Sędziów"
+  },
+  {
+    "id": "Ruth",
+    "abbr": "Rt",
+    "name_en": "Ruth",
+    "name_pl": "Księga Rut"
+  },
+  {
+    "id": "1Sam",
+    "abbr": "1Sm",
+    "name_en": "1 Samuel",
+    "name_pl": "I Księga Samuela"
+  },
+  {
+    "id": "2Sam",
+    "abbr": "2Sm",
+    "name_en": "2 Samuel",
+    "name_pl": "II Księga Samuela"
+  },
+  {
+    "id": "1Kgs",
+    "abbr": "1Krl",
+    "name_en": "1 Kings",
+    "name_pl": "I Księga Królewska"
+  },
+  {
+    "id": "2Kgs",
+    "abbr": "2Krl",
+    "name_en": "2 Kings",
+    "name_pl": "II Księga Królewska"
+  },
+  {
+    "id": "1Chr",
+    "abbr": "1Krn",
+    "name_en": "1 Chronicles",
+    "name_pl": "I Księga Kronik"
+  },
+  {
+    "id": "2Chr",
+    "abbr": "2Krn",
+    "name_en": "2 Chronicles",
+    "name_pl": "II Księga Kronik"
+  },
+  {
+    "id": "Ezra",
+    "abbr": "Ezd",
+    "name_en": "Ezra",
+    "name_pl": "Księga Ezdrasza"
+  },
+  {
+    "id": "Neh",
+    "abbr": "Ne",
+    "name_en": "Nehemiah",
+    "name_pl": "Księga Nehemiasza"
+  },
+  {
+    "id": "Esth",
+    "abbr": "Est",
+    "name_en": "Esther",
+    "name_pl": "Księga Estery"
+  },
+  {
+    "id": "Job",
+    "abbr": "Hi",
+    "name_en": "Job",
+    "name_pl": "Księga Hioba"
+  },
+  {
+    "id": "Ps",
+    "abbr": "Ps",
+    "name_en": "Psalms",
+    "name_pl": "Księga Psalmów"
+  },
+  {
+    "id": "Prov",
+    "abbr": "Prz",
+    "name_en": "Proverbs",
+    "name_pl": "Księga Przypowieści Salomona"
+  },
+  {
+    "id": "Eccl",
+    "abbr": "Kaz",
+    "name_en": "Ecclesiastes",
+    "name_pl": "Księga Kaznodziei"
+  },
+  {
+    "id": "Song",
+    "abbr": "Pnp",
+    "name_en": "Solomon's Song",
+    "name_pl": "Pieśń nad Pieśniami"
+  },
+  {
+    "id": "Isa",
+    "abbr": "Iz",
+    "name_en": "Isaiah",
+    "name_pl": "Księga Izajasza"
+  },
+  {
+    "id": "Jer",
+    "abbr": "Jr",
+    "name_en": "Jeremiah",
+    "name_pl": "Księga Jeremiasza"
+  },
+  {
+    "id": "Lam",
+    "abbr": "Lm",
+    "name_en": "Lamentations",
+    "name_pl": "Lamentacje"
+  },
+  {
+    "id": "Ezek",
+    "abbr": "Ez",
+    "name_en": "Ezekiel",
+    "name_pl": "Księga Ezechiela"
+  },
+  {
+    "id": "Dan",
+    "abbr": "Dn",
+    "name_en": "Daniel",
+    "name_pl": "Księga Daniela"
+  },
+  {
+    "id": "Hos",
+    "abbr": "Oz",
+    "name_en": "Hosea",
+    "name_pl": "Księga Ozeasza"
+  },
+  {
+    "id": "Joel",
+    "abbr": "Jl",
+    "name_en": "Joel",
+    "name_pl": "Księga Joela"
+  },
+  {
+    "id": "Amos",
+    "abbr": "Am",
+    "name_en": "Amos",
+    "name_pl": "Księga Amosa"
+  },
+  {
+    "id": "Obad",
+    "abbr": "Ab",
+    "name_en": "Obadiah",
+    "name_pl": "Księga Abdiasza"
+  },
+  {
+    "id": "Jonah",
+    "abbr": "Jon",
+    "name_en": "Jonah",
+    "name_pl": "Księga Jonasza"
+  },
+  {
+    "id": "Mic",
+    "abbr": "Mi",
+    "name_en": "Micah",
+    "name_pl": "Księga Micheasza"
+  },
+  {
+    "id": "Nah",
+    "abbr": "Na",
+    "name_en": "Nahum",
+    "name_pl": "Księga Nahuma"
+  },
+  {
+    "id": "Hab",
+    "abbr": "Ha",
+    "name_en": "Habakkuk",
+    "name_pl": "Księga Habakuka"
+  },
+  {
+    "id": "Zeph",
+    "abbr": "So",
+    "name_en": "Zephaniah",
+    "name_pl": "Księga Sofoniasza"
+  },
+  {
+    "id": "Hag",
+    "abbr": "Ag",
+    "name_en": "Haggai",
+    "name_pl": "Księga Aggeusza"
+  },
+  {
+    "id": "Zech",
+    "abbr": "Za",
+    "name_en": "Zechariah",
+    "name_pl": "Księga Zachariasza"
+  },
+  {
+    "id": "Mal",
+    "abbr": "Ml",
+    "name_en": "Malachi",
+    "name_pl": "Księga Malachiasza"
+  },
+  {
+    "id": "Matt",
+    "abbr": "Mt",
+    "name_en": "Matthew",
+    "name_pl": "Ewangelia Mateusza"
+  },
+  {
+    "id": "Mark",
+    "abbr": "Mk",
+    "name_en": "Mark",
+    "name_pl": "Ewangelia Marka"
+  },
+  {
+    "id": "Luke",
+    "abbr": "Łk",
+    "name_en": "Luke",
+    "name_pl": "Ewangelia Łukasza"
+  },
+  {
+    "id": "John",
+    "abbr": "J",
+    "name_en": "John",
+    "name_pl": "Ewangelia Jana"
+  },
+  {
+    "id": "Acts",
+    "abbr": "Dz",
+    "name_en": "Acts",
+    "name_pl": "Dzieje Apostolskie"
+  },
+  {
+    "id": "Rom",
+    "abbr": "Rz",
+    "name_en": "Romans",
+    "name_pl": "List do Rzymian"
+  },
+  {
+    "id": "1Cor",
+    "abbr": "1Kor",
+    "name_en": "1 Corinthians",
+    "name_pl": "I List do Koryntian"
+  },
+  {
+    "id": "2Cor",
+    "abbr": "2Kor",
+    "name_en": "2 Corinthians",
+    "name_pl": "II List do Koryntian"
+  },
+  {
+    "id": "Gal",
+    "abbr": "Ga",
+    "name_en": "Galatians",
+    "name_pl": "List do Galacjan"
+  },
+  {
+    "id": "Eph",
+    "abbr": "Ef",
+    "name_en": "Ephesians",
+    "name_pl": "List do Efezjan"
+  },
+  {
+    "id": "Phil",
+    "abbr": "Flp",
+    "name_en": "Philippians",
+    "name_pl": "List do Filipian"
+  },
+  {
+    "id": "Col",
+    "abbr": "Kol",
+    "name_en": "Colossians",
+    "name_pl": "List do Kolosan"
+  },
+  {
+    "id": "1Thess",
+    "abbr": "1Tes",
+    "name_en": "1 Thessalonians",
+    "name_pl": "I List do Tesaloniczan"
+  },
+  {
+    "id": "2Thess",
+    "abbr": "2Tes",
+    "name_en": "2 Thessalonians",
+    "name_pl": "II List do Tesaloniczan"
+  },
+  {
+    "id": "1Tim",
+    "abbr": "1Tm",
+    "name_en": "1 Timothy",
+    "name_pl": "I List do Tymoteusza"
+  },
+  {
+    "id": "2Tim",
+    "abbr": "2Tm",
+    "name_en": "2 Timothy",
+    "name_pl": "II List do Tymoteusza"
+  },
+  {
+    "id": "Titus",
+    "abbr": "Tt",
+    "name_en": "Titus",
+    "name_pl": "List do Tytusa"
+  },
+  {
+    "id": "Phlm",
+    "abbr": "Flm",
+    "name_en": "Philemon",
+    "name_pl": "List do Filemona"
+  },
+  {
+    "id": "Heb",
+    "abbr": "Hbr",
+    "name_en": "Hebrews",
+    "name_pl": "List do Hebrajczyków"
+  },
+  {
+    "id": "Jas",
+    "abbr": "Jk",
+    "name_en": "James",
+    "name_pl": "List Jakuba"
+  },
+  {
+    "id": "1Pet",
+    "abbr": "1P",
+    "name_en": "1 Peter",
+    "name_pl": "I List Piotra"
+  },
+  {
+    "id": "2Pet",
+    "abbr": "2P",
+    "name_en": "2 Peter",
+    "name_pl": "II List Piotra"
+  },
+  {
+    "id": "1John",
+    "abbr": "1J",
+    "name_en": "1 John",
+    "name_pl": "I List Jana"
+  },
+  {
+    "id": "2John",
+    "abbr": "2J",
+    "name_en": "2 John",
+    "name_pl": "II List Jana"
+  },
+  {
+    "id": "3John",
+    "abbr": "3J",
+    "name_en": "3 John",
+    "name_pl": "III List Jana"
+  },
+  {
+    "id": "Jude",
+    "abbr": "Jud",
+    "name_en": "Jude",
+    "name_pl": "List Judy"
+  },
+  {
+    "id": "Rev",
+    "abbr": "Ob",
+    "name_en": "Revelation",
+    "name_pl": "Księga Objawienia"
+  }
+]

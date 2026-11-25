@@ -1,0 +1,6 @@
+{
+  "identifier": "reader",
+  "description": "The bundled reader queries the local, read-only public snapshot.",
+  "windows": ["main"],
+  "permissions": []
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.didaske.Didaske.Dev</id>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-3.0-only</project_license>
+  <name>Didaske</name>
+  <name xml:lang="pl">Didaske</name>
+  <summary>Read and compare Bible passages and explore their Greek wording</summary>
+  <summary xml:lang="pl">Czytaj i porównuj fragmenty Biblii oraz poznawaj tekst grecki</summary>
+  <description>
+    <p>Compare the available Polish, English and Greek editions of a verse. Open a footnote and keep it next to the chapter while you read.</p>
+    <p xml:lang="pl">Porównuj dostępne polskie, angielskie i greckie wydania wersetu. Otwórz przypis i zachowaj go obok rozdziału podczas lektury.</p>
+    <p>Follow a Greek form to its meanings and grammar, or read the letters of Ignatius of Antioch in Greek. Switch between the English and Polish interfaces as you study.</p>
+    <p xml:lang="pl">Poznawaj znaczenie i gramatykę greckich form lub czytaj po grecku listy Ignacego z Antiochii. Podczas lektury możesz przełączać interfejs między polskim a angielskim.</p>
+  </description>
+  <launchable type="desktop-id">com.didaske.Didaske.Dev.desktop</launchable>
+  <categories><category>Education</category></categories>
+  <keywords>
+    <keyword>Bible</keyword><keyword>Greek</keyword>
+    <keyword xml:lang="pl">Biblia</keyword><keyword xml:lang="pl">greka</keyword>
+  </keywords>
+  <url type="vcs-browser">https://github.com/tometchy/Didaske</url>
+  <url type="homepage">https://github.com/tometchy/Didaske</url>
+  <developer id="io.github.tometchy">
+    <name>Didaske contributors</name>
+    <name xml:lang="pl">Współtwórcy Didaske</name>
+  </developer>
+</component>

@@ -1,0 +1,8 @@
+{
+  "name": "Didaske",
+  "subtitle": "Biblia i greka",
+  "description": "Czytaj rozdział i wybierz werset, aby porównać dostępne wydania polskie, angielskie i greckie. Otwórz przypis wydawcy w miejscu, w którym oznaczono go w tekście. Podczas dalszej lektury możesz zachować przypis obok czytanego fragmentu.\n\nWybierz greckie słowo, aby poznać jego poświadczone znaczenia, wymowę i gramatykę. Przeszukuj lokalne zbiory lub czytaj po grecku listy Ignacego z Antiochii. Język interfejsu, polski lub angielski, wybierasz niezależnie od języka czytanego tekstu.",
+  "keywords": "Pismo Święte,greka,werset,gramatyka,Ignacy",
+  "promotionalText": "Czytaj i porównuj przekłady Biblii. Poznawaj greckie słowa w kontekście.",
+  "whatsNew": "Porównuj wersety, otwieraj przypisy TNP i sprawdzaj znaczenie greckich form w kontekście."
+}

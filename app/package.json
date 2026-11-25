@@ -1,0 +1,30 @@
+{
+  "name": "didaske-reader",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "build": "vite build && node scripts/static.js --sample",
+    "build:pages:preview": "vite build --outDir dist-preview && node scripts/static.js --full-local-preview",
+    "build:native": "vite build --mode native --outDir dist-native",
+    "dev": "vite --host 127.0.0.1",
+    "test": "node --test ../tests/reader/*.test.mjs",
+    "tauri": "tauri",
+    "build:pages:tar": "vite build --outDir dist-tar-assets && node scripts/static.js --tar"
+  },
+  "dependencies": {
+    "@noble/hashes": "2.4.0",
+    "@sqlite.org/sqlite-wasm": "3.54.1-build1",
+    "pdfjs-dist": "6.5.438",
+    "unpoly": "3.14.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.55.1",
+    "@tauri-apps/cli": "^2.0.0",
+    "codeceptjs": "3.7.5",
+    "vite": "7.3.8"
+  }
+}

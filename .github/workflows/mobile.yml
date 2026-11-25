@@ -1,0 +1,100 @@
+name: Verify mobile development packages
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  mobile:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - platform: android
+            os: ubuntu-24.04
+          - platform: ios
+            os: macos-15
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - run: npm ci --prefix app
+      - run: node app/store-listings/check.mjs
+      - uses: actions/setup-java@v4
+        if: matrix.platform == 'android'
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Configure Android SDK and Rust target
+        if: matrix.platform == 'android'
+        shell: bash
+        run: |
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platform-tools' 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.2.12479018'
+          echo "NDK_HOME=$ANDROID_HOME/ndk/27.2.12479018" >> "$GITHUB_ENV"
+          rustup target add aarch64-linux-android
+      - name: Build and inspect the ARM64 debug APK
+        if: matrix.platform == 'android'
+        working-directory: app
+        shell: bash
+        run: |
+          npm run tauri -- android init --ci --skip-targets-install
+          npm run tauri -- android build --ci --debug --target aarch64 --apk
+          shopt -s globstar nullglob
+          packages=(src-tauri/gen/android/app/build/outputs/apk/**/*debug.apk)
+          test "${#packages[@]}" -eq 1
+          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify "${packages[0]}"
+          python3 - "${packages[0]}" <<'PY'
+          import sys, zipfile
+          with zipfile.ZipFile(sys.argv[1]) as archive:
+              names = archive.namelist()
+              assert "AndroidManifest.xml" in names
+              assert any(name.startswith("lib/arm64-v8a/") and name.endswith(".so") for name in names)
+          PY
+          mkdir -p ../build/mobile-check
+          cp "${packages[0]}" ../build/mobile-check/Didaske-arm64-debug.apk
+      - name: Build the unsigned iOS Simulator app
+        if: matrix.platform == 'ios'
+        working-directory: app
+        shell: bash
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphonesimulator --show-sdk-version
+          command -v pod || brew install cocoapods
+          case "$(uname -m)" in
+            arm64) target=aarch64-sim; rustup target add aarch64-apple-ios-sim ;;
+            x86_64) target=x86_64; rustup target add x86_64-apple-ios ;;
+            *) exit 1 ;;
+          esac
+          npm run tauri -- ios init --ci --skip-targets-install
+          npm run tauri -- ios build --ci --debug --no-sign --target "$target"
+      - name: Install and launch on an iPhone simulator
+        if: matrix.platform == 'ios'
+        shell: bash
+        run: |
+          shopt -s nullglob
+          bundles=(app/src-tauri/gen/apple/build/*/*.app)
+          test "${#bundles[@]}" -eq 1
+          bundle="${bundles[0]}"
+          test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleSupportedPlatforms:0' "$bundle/Info.plist")" = iPhoneSimulator
+          bundle_id=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$bundle/Info.plist")
+          codesign --force --deep --sign - --timestamp=none "$bundle"
+          simulator=$(xcrun simctl list devices available --json | python3 -c 'import json,sys; print(next(d["udid"] for runtime,devices in sorted(json.load(sys.stdin)["devices"].items(), reverse=True) if ".iOS-" in runtime for d in devices if d["name"].startswith("iPhone")))')
+          xcrun simctl bootstatus "$simulator" -b
+          xcrun simctl install "$simulator" "$bundle"
+          xcrun simctl launch "$simulator" "$bundle_id"
+          mkdir -p build/mobile-check
+          ditto -c -k --keepParent "$bundle" build/mobile-check/Didaske-simulator.zip
+      - uses: actions/upload-artifact@v4
+        with:
+          name: didaske-${{ matrix.platform }}-development-${{ github.sha }}
+          path: build/mobile-check/
+          if-no-files-found: error
+          retention-days: 7

@@ -1,0 +1,62 @@
+name: Build Didaske Pages
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: Publish this build to the configured Pages site after release review
+        type: boolean
+        default: false
+permissions:
+  contents: read
+jobs:
+  site:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: npm ci --prefix app
+      - run: python3 data/build/snapshot.py
+      - run: python3 tests/data/check-content-integrity.py
+      - run: npm --prefix app run build:pages:tar
+      - run: python3 app/scripts/check-pages.py --tar
+      - name: Check publication budget
+        run: |
+          node -e "const r=require('./build/full-site-report.json'); console.log(r); if (!r.withinSizeBudget || r.elapsedSeconds > 480) process.exit(1)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: site-measurements
+          path: build/full-site-report.json
+      - name: Prepare verified Pages artifact
+        if: inputs.publish && github.ref == 'refs/heads/master'
+        run: mv build/pages.tar "$RUNNER_TEMP/artifact.tar"
+      - uses: actions/upload-artifact@v4
+        if: inputs.publish && github.ref == 'refs/heads/master'
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
+  publish:
+    if: inputs.publish && github.ref == 'refs/heads/master'
+    needs: site
+    runs-on: ubuntu-24.04
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    concurrency:
+      group: didaske-pages-publication
+      cancel-in-progress: false
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

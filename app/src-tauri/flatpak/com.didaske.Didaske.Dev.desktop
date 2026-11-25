@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Didaske
+Comment=Read and compare Bible passages offline
+Comment[pl]=Czytaj i porównuj fragmenty Biblii offline
+Exec=didaske
+Icon=com.didaske.Didaske.Dev
+Categories=Education;Literature;
+Terminal=false

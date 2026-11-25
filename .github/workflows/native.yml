@@ -1,0 +1,66 @@
+name: Verify installed reader
+on:
+  pull_request:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  desktop:
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm, windows-2022]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 75
+    env:
+      PYTHONUTF8: "1"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Select Rust
+        run: rustup default 1.100.0
+      - name: Install native build dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends libwebkit2gtk-4.1-dev libayatana-appindicator3-dev librsvg2-dev flatpak webkit2gtk-driver xvfb xauth dbus-x11
+      - run: npm ci
+        working-directory: app
+      - name: Build Linux reader
+        if: runner.os == 'Linux'
+        working-directory: app
+        run: npm run tauri -- build --no-bundle
+      - name: Test embedded snapshot and package the test Flatpak
+        if: runner.os == 'Linux'
+        run: |
+          app/src-tauri/target/release/didaske --self-test
+          xvfb-run -a dbus-run-session -- node app/src-tauri/smoke.mjs app/src-tauri/target/release/didaske tests/visual/reports/native
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak install --user -y --noninteractive flathub org.gnome.Platform//51
+          app/src-tauri/flatpak/package.sh app/src-tauri/target/release/didaske "$RUNNER_TEMP/Didaske.flatpak"
+          flatpak install --user -y --noninteractive --bundle "$RUNNER_TEMP/Didaske.flatpak"
+          flatpak run --branch=dev com.didaske.Didaske.Dev --self-test
+      - name: Build development NSIS installer
+        if: runner.os == 'Windows'
+        working-directory: app
+        run: npm run tauri -- build --bundles nsis
+      - name: Check Windows binary and installer
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          $program = Start-Process app/src-tauri/target/release/didaske.exe -ArgumentList '--self-test' -Wait -PassThru
+          if ($program.ExitCode -ne 0) { throw 'Native snapshot self-test failed.' }
+          if (!(Get-ChildItem app/src-tauri/target/release/bundle/nsis/*.exe)) { throw 'NSIS installer missing.' }
+      - name: Check native account and note privacy contracts
+        run: cargo test --locked --manifest-path app/src-tauri/Cargo.toml --lib
