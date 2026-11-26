@@ -1,6 +1,20 @@
 name: Verify mobile development packages
 on:
+  push:
+    branches: [master]
+    paths:
+      - 'app/**'
+      - 'data/build/**'
+      - 'input/**'
+      - 'input-raw/**'
+      - 'tags/**'
+      - '.github/workflows/mobile.yml'
   workflow_dispatch:
+    inputs:
+      retain_packages:
+        description: Keep the debug APK and simulator app for seven days
+        type: boolean
+        default: false
 permissions:
   contents: read
 
@@ -16,6 +30,10 @@ jobs:
             os: macos-15
     runs-on: ${{ matrix.os }}
     timeout-minutes: 90
+    env:
+      RETAIN_PACKAGES: ${{ github.event_name == 'workflow_dispatch' && inputs.retain_packages && 'true' || 'false' }}
+      CARGO_PROFILE_DEV_DEBUG: '0'
+      CARGO_INCREMENTAL: '0'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -26,6 +44,8 @@ jobs:
           node-version: '24'
           cache: npm
           cache-dependency-path: app/package-lock.json
+      - name: Select the tested Rust toolchain
+        run: rustup default 1.100.0
       - run: npm ci --prefix app
       - run: node app/store-listings/check.mjs
       - uses: actions/setup-java@v4
@@ -37,7 +57,7 @@ jobs:
         if: matrix.platform == 'android'
         shell: bash
         run: |
-          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platform-tools' 'platforms;android-36' 'build-tools;36.0.0' 'ndk;27.2.12479018'
+          "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" 'platform-tools' 'platforms;android-37' 'build-tools;37.0.0' 'ndk;27.2.12479018'
           echo "NDK_HOME=$ANDROID_HOME/ndk/27.2.12479018" >> "$GITHUB_ENV"
           rustup target add aarch64-linux-android
       - name: Build and inspect the ARM64 debug APK
@@ -50,7 +70,7 @@ jobs:
           shopt -s globstar nullglob
           packages=(src-tauri/gen/android/app/build/outputs/apk/**/*debug.apk)
           test "${#packages[@]}" -eq 1
-          "$ANDROID_HOME/build-tools/36.0.0/apksigner" verify "${packages[0]}"
+          "$ANDROID_HOME/build-tools/37.0.0/apksigner" verify "${packages[0]}"
           python3 - "${packages[0]}" <<'PY'
           import sys, zipfile
           with zipfile.ZipFile(sys.argv[1]) as archive:
@@ -58,8 +78,10 @@ jobs:
               assert "AndroidManifest.xml" in names
               assert any(name.startswith("lib/arm64-v8a/") and name.endswith(".so") for name in names)
           PY
-          mkdir -p ../build/mobile-check
-          cp "${packages[0]}" ../build/mobile-check/Didaske-arm64-debug.apk
+          if [[ "$RETAIN_PACKAGES" == true ]]; then
+            mkdir -p ../build/mobile-check
+            cp "${packages[0]}" ../build/mobile-check/Didaske-arm64-debug.apk
+          fi
       - name: Build the unsigned iOS Simulator app
         if: matrix.platform == 'ios'
         working-directory: app
@@ -67,6 +89,7 @@ jobs:
         run: |
           xcodebuild -version
           xcrun --sdk iphonesimulator --show-sdk-version
+          command -v xcodegen || brew install xcodegen
           command -v pod || brew install cocoapods
           case "$(uname -m)" in
             arm64) target=aarch64-sim; rustup target add aarch64-apple-ios-sim ;;
@@ -90,9 +113,12 @@ jobs:
           xcrun simctl bootstatus "$simulator" -b
           xcrun simctl install "$simulator" "$bundle"
           xcrun simctl launch "$simulator" "$bundle_id"
-          mkdir -p build/mobile-check
-          ditto -c -k --keepParent "$bundle" build/mobile-check/Didaske-simulator.zip
+          if [[ "$RETAIN_PACKAGES" == true ]]; then
+            mkdir -p build/mobile-check
+            ditto -c -k --keepParent "$bundle" build/mobile-check/Didaske-simulator.zip
+          fi
       - uses: actions/upload-artifact@v4
+        if: env.RETAIN_PACKAGES == 'true'
         with:
           name: didaske-${{ matrix.platform }}-development-${{ github.sha }}
           path: build/mobile-check/
