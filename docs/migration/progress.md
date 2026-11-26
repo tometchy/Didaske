@@ -26,6 +26,12 @@ The corpus was imported from tometchy/KazdyDzienZJezusem at 47dfc1d1558a7bf7df21
 - The final Linux executable (SHA-256 2b9d5fc66fdf30dfcc3483aee495e151b21bb8fda04b715c509467bedea924c2) and installed test Flatpak (d5589ca090c2599ffcf6ac223c4e90c9dd4fd66a05cb6bfe4b8f6872269124f4) both passed the offline self-test for 84,357 verses and 34 named queries. The actual WebKitWebDriver release smoke exercised the PL/EN chapter, footnote modal and full-page link. The isolated Flatpak used the development identifier com.didaske.Didaske.Dev. A synthetic pending note also survived two separate invocations of the release executable on Linux Mint: every byte and the complete revision-1 record matched after process termination and restart. Installed-version upgrades remain unverified.
 - The final full local Pages build produced 488,133 served files, 788,552,794 bytes before tar padding, within the 800 MB budget. Vite and the complete archive build finished in 284.64 seconds. The 1,162,405,376-byte POSIX archive and byte report are in build/ on the laptop. The independent destination archive check passed all 453,418 sitemap URLs, split evenly between PL and EN. It checked 62,204 verse comparison pages, 6,454 chapters, 60,192 footnotes, 281,256 word pages and 42,528 dictionary entries. Actual GitHub staging deployment, hosting behavior and timing remain unverified. See [Pages measurements](pages-measurement.md).
 
+## Hosted checks and visual reproducibility — 26 November 2026
+
+The [native matrix for the initial migration](https://github.com/tometchy/Didaske/actions/runs/45667974306) passed for Linux x86-64, Linux ARM64 and Windows. The Linux jobs built, installed and checked the development Flatpak on their runners. Windows built the NSIS installer and ran the executable self-test.
+
+The [first hosted reader run](https://github.com/tometchy/Didaske/actions/runs/45667974589) passed corpus and reader behavior checks and found a font discrepancy in the four PL/EN note overlay screenshots. The runner now selects the same Noto Sans and DejaVu Serif families used for the reviewed laptop images. The approved baseline images and pixel thresholds are preserved. Use the reader workflow for the current master commit to check hosted status.
+
 ## Outstanding acceptance and release work
 
 1. Review the independent reference archive with an editor, including the two source explanations without a printed marker. Confirm any channel-specific distribution rights before publishing packages or Pages.

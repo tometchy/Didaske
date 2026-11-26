@@ -2,6 +2,15 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 root="$PWD"
+if [[ $(uname -s) == Linux ]]; then
+  export FONTCONFIG_FILE="$root/tests/visual/fonts.conf"
+  for font in 'Noto Sans' 'DejaVu Serif'; do
+    [[ $(fc-match --format='%{family}' "$font") == "$font" ]] || {
+      echo "Screenshot typeface missing: $font. Run bash scripts/setup-visual-tests.sh --with-deps." >&2
+      exit 1
+    }
+  done
+fi
 # Always rebuild the reviewed checkout. Bind a fresh port and clean up on exit.
 python3 data/build/snapshot.py
 npm --prefix app run build
