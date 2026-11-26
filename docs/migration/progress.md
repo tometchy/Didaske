@@ -6,7 +6,7 @@ Work in tometchy/Didaske on master. Check `git status --short --branch` and the 
 
 ## Source transfer
 
-The corpus was imported from tometchy/KazdyDzienZJezusem at 47dfc1d1558a7bf7df2199318f84ad6b645200bc. All 3,340 original files in input and input-raw, the source licenses, public tags, tracked Index and editorial material were copied. Public editorial Notes were synchronized to the donor's 6a0c61a142310425f833d49d0bc23ca6ade2219d revision before publication. They are distinct from private GitHub Notes. The owner confirmed permission to place the transferred sources in this public repository. Machine-local secrets, the old Git database, containers and Redis state were excluded. Links in the historical audit point at the original implementation where appropriate.
+The corpus was imported from tometchy/KazdyDzienZJezusem at 47dfc1d1558a7bf7df2199318f84ad6b645200bc. All 3,340 original files in input and input-raw, the source licenses, public tags, tracked Index and editorial material were copied. Public editorial Notes were synchronized to the donor's 6a0c61a142310425f833d49d0bc23ca6ade2219d revision before publication. They are distinct from private GitHub Notes. The owner confirmed permission to place the transferred sources in this public repository. A later public Topics edit was copied from a4a11a62ee4d817c66ad652e1518e6b10a27b586. The 3,413 tracked files across the eight imported content directories match that source revision. Machine-local secrets, the old Git database, containers and Redis state were excluded. Links in the historical audit point at the original implementation where appropriate.
 
 ## Implemented and exercised
 
@@ -32,7 +32,7 @@ The [native matrix for the initial migration](https://github.com/tometchy/Didask
 
 The [first hosted reader run](https://github.com/tometchy/Didaske/actions/runs/45667974589) found a font discrepancy in the four PL/EN note overlay screenshots. After selecting Noto Sans and DejaVu Serif, the [hosted reader checks](https://github.com/tometchy/Didaske/actions/runs/45756674151) and the [three desktop jobs](https://github.com/tometchy/Didaske/actions/runs/45756674193) passed on cc27fe2 with the reviewed laptop images and original pixel thresholds.
 
-Changes to mobile build inputs on master now exercise the Android ARM64 debug APK and the iOS simulator build. Check the **Verify mobile development packages** run for the revision under test. The jobs retain packages only when the operator selects the retention option in a manual run.
+Changes to mobile build inputs on master now exercise the Android ARM64 debug APK and the iOS simulator build. The [first Android run](https://github.com/tometchy/Didaske/actions/runs/45862588693/job/140057158885) stopped at SDK setup. Google publishes API 37 as platforms;android-37.0. Check the **Verify mobile development packages** run for the corrected revision to verify the APK and the installed simulator app. The jobs retain packages only when the operator selects the retention option in a manual run.
 
 ## Outstanding acceptance and release work
 
