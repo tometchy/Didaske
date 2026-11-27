@@ -32,7 +32,9 @@ The [native matrix for the initial migration](https://github.com/tometchy/Didask
 
 The [first hosted reader run](https://github.com/tometchy/Didaske/actions/runs/45667974589) found a font discrepancy in the four PL/EN note overlay screenshots. After selecting Noto Sans and DejaVu Serif, the [hosted reader checks](https://github.com/tometchy/Didaske/actions/runs/45756674151) and the [three desktop jobs](https://github.com/tometchy/Didaske/actions/runs/45756674193) passed on cc27fe2 with the reviewed laptop images and original pixel thresholds.
 
-Changes to mobile build inputs on master now exercise the Android ARM64 debug APK and the iOS simulator build. The [first Android run](https://github.com/tometchy/Didaske/actions/runs/45862588693/job/140057158885) stopped at SDK setup. Google publishes API 37 as platforms;android-37.0. Check the **Verify mobile development packages** run for the corrected revision to verify the APK and the installed simulator app. The jobs retain packages only when the operator selects the retention option in a manual run.
+GitHub Actions verified the Android ARM64 debug APK signature, manifest and native library on 1c14669 after correcting the SDK package name to `platforms;android-37.0`. On the same revision, the macOS runner built, installed and launched the app on an iPhone simulator. Mobile packages are retained only when the operator selects that option in a manual run. [Mobile verification](https://github.com/tometchy/Didaske/actions/runs/45863381109)
+
+The reader and corpus checks and all three desktop jobs passed on 1c14669. One earlier Linux ARM64 WebView timed out waiting for the chapter to render. The timeout did not recur in the final run, and its cause remains undetermined. [Reader checks](https://github.com/tometchy/Didaske/actions/runs/45863381115) · [Desktop packages](https://github.com/tometchy/Didaske/actions/runs/45863381237)
 
 ## Outstanding acceptance and release work
 
