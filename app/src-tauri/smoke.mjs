@@ -22,11 +22,13 @@ async function request(path, body, method = 'POST') {
   const response = await fetch(url + path, { method, signal: AbortSignal.timeout(125000),
     headers: { 'Content-Type':'application/json' }, body:body && JSON.stringify(body) });
   const { value } = await response.json();
-  if (!response.ok || value?.error) throw new Error(JSON.stringify(value));
+  if (!response.ok || value?.error) {
+    throw Object.assign(new Error(value?.message ?? JSON.stringify(value)), {code: value?.error});
+  }
   return value;
 }
-async function execute(script) {
-  return request('/session/' + session + '/execute/sync', { script, args:[] });
+async function execute(script, args = []) {
+  return request('/session/' + session + '/execute/sync', { script, args });
 }
 async function until(read) {
   for (let attempt = 0; attempt < 240; attempt++) {
@@ -35,12 +37,29 @@ async function until(read) {
   }
   throw new Error('Timed out waiting for the native reader: ' + (session ? await execute('return document.documentElement.outerHTML.slice(0,3500)') : 'no session'));
 }
+async function waitForReader(paths, selector) {
+  await until(async () => {
+    try {
+      return await execute(`
+        const [paths, selector] = arguments;
+        return paths.includes(location.pathname)
+          && document.documentElement.lang === location.pathname.split('/')[1]
+          && !!document.querySelector(selector);
+      `, [paths, selector]);
+    } catch (error) {
+      // WebKit can discard the previous document while handling a navigation.
+      if (error.code === 'no such frame' && /unload/i.test(error.message)) return false;
+      throw error;
+    }
+  });
+}
 try {
   await mkdir(output, {recursive:true});
   await until(() => fetch(url + '/status').then(r => r.ok, () => false));
   ({sessionId: session} = await request('/session', {capabilities:{alwaysMatch:{
     'webkitgtk:browserOptions':{binary}
   }}}));
+  await waitForReader(['/pl/', '/en/'], '#main-content .editions a.edition');
   assert.equal(await execute("return typeof window.__TAURI__?.core.invoke"), 'function');
   await request('/session/' + session + '/timeouts', { script:120000 });
   const auth = await request('/session/' + session + '/execute/async', {
@@ -50,14 +69,15 @@ try {
   assert.equal(auth.user, null);
   const origin = await execute('return location.origin');
   for (const [locale, label] of [['pl','Otwórz pełną stronę'],['en','Open full page']]) {
-    await request('/session/' + session + '/url', {url: origin + '/' + locale + '/Biblia/TNP/J/3/'});
+    const path = '/' + locale + '/Biblia/TNP/J/3/';
+    const selector = '#v16 a[data-detail][href^="/' + locale + '/Study/TNP/J/3/16/notes/"]';
+    await request('/session/' + session + '/url', {url: origin + path});
+    await waitForReader([path], selector);
     const diagnostics = await request('/session/' + session + '/execute/async', {
       script: "const done=arguments[0]; window.__TAURI__.core.invoke('read_public',{name:'translations',params:[]}).then(rows=>done({count:rows.length}),e=>done({error:String(e)}))", args:[]
     });
     assert.equal(diagnostics.count, 4, JSON.stringify(diagnostics));
-    const selector = 'a[data-detail][href*="/3/16/notes/"]';
-    await until(() => execute('return !!document.querySelector(' + JSON.stringify(selector) + ')'));
-    await execute('document.querySelector(' + JSON.stringify(selector) + ').click()');
+    await execute('document.querySelector(arguments[0]).click()', [selector]);
     await until(() => execute("return !!document.querySelector('dialog[open] a[data-full]')"));
     assert.equal(await execute("return document.querySelector('dialog[open] a[data-full]').textContent"), label);
     const screenshot = await request('/session/' + session + '/screenshot', undefined, 'GET');

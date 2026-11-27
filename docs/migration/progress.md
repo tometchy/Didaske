@@ -36,6 +36,8 @@ GitHub Actions verified the Android ARM64 debug APK signature, manifest and nati
 
 The reader and corpus checks and all three desktop jobs passed on 1c14669. One earlier Linux ARM64 WebView timed out waiting for the chapter to render. The timeout did not recur in the final run, and its cause remains undetermined. [Reader checks](https://github.com/tometchy/Didaske/actions/runs/45863381115) · [Desktop packages](https://github.com/tometchy/Didaske/actions/runs/45863381237)
 
+A later ARM64 test recorded WebKit unloading the previous document during an asynchronous diagnostic call. The installed-reader test now waits for the localized home to render and for the requested chapter to show the John 3:16 note link before querying the native bridge. The public reader code and timeouts are unchanged. For the current result, check the **Verify installed reader** workflow at the tested revision. [WebKit diagnostic log](https://github.com/tometchy/Didaske/actions/runs/45947612964/job/140335814825)
+
 ## Outstanding acceptance and release work
 
 1. Review the independent reference archive with an editor, including the two source explanations without a printed marker. Confirm any channel-specific distribution rights before publishing packages or Pages.
